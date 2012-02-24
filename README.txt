@@ -13,6 +13,10 @@ MIT-style license, see LICENSE.txt
 Description:
 Classes for loading 3D-mesh objects in Imagine TDDD format (.iob) to be used in games and such.
 
+Imagine was preceded by Impulse's TurboSilver on Amiga and 
+fileformat is same IFF-FORM based TDDD as far as I know..
+
+
 Planned doing this a while back but never got around to doing it..
 
 Status:
