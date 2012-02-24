@@ -12,17 +12,18 @@
 #ifndef _IOBTAGS_H_
 #define _IOBTAGS_H_
 
-/* chunk and subchunk IDs */
-#define FORMID_(a,b,c,d) (((a)<<24)|((b)<<16)|((c)<<8)|(d))
+/* helper to generate chunk and subchunk IDs */
+/* MakeID macro found in original EA-IFF85 standard specification */
+#define MakeID(a,b,c,d) (((a)<<24)|((b)<<16)|((c)<<8)|(d))
 
 /* Universal IFF identifiers */
 /** IFF start-identifier **/
-#define ID_FORM		FORMID_('F','O','R','M')
+#define ID_FORM		MakeID('F','O','R','M')
 
 /** 
  Imagine format: TDDD
 **/
-#define ID_TDDD		FORMID_('T','D','D','D')
+#define ID_TDDD		MakeID('T','D','D','D')
 
 #endif
 
