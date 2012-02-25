@@ -530,13 +530,19 @@ public:
 		return true;
 	}
 
-	/*
+	// quick&simple helper (less typing..)
+	bool Read(CIOBuffer &Buffer, const size_t nBytes)
+	{
+		return Read(Buffer.GetBegin(), nBytes);
+	}
+
+	/* // problematic, don't use..
 	bool Read(CIOBuffer &Buffer)
 	{
 		return Read(Buffer.GetBegin(), Buffer.GetSize());
 	}
 	*/
-	
+
 	bool Tell(long &lPos)
 	{
 		lPos = ftell(m_pFile);

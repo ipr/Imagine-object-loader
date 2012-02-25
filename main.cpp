@@ -10,7 +10,7 @@
 
 // 
 #include "AnsiFile.h"
-//#include "LwoReader.h"
+#include "IobReader.h"
 
 //#include <iostream>
 //using namespace std;
@@ -29,7 +29,7 @@ int main( int argc, char *argv[] )
 
 	// handler of file-format into internal list
 	//
-	//CLwoReader LwoReader;
+	CIobReader Reader;
 
 	if (file.IsOk() == false)
 	{
@@ -42,13 +42,11 @@ int main( int argc, char *argv[] )
 
 	// pass buffer of file to Lwo-handler for parsing
 	//
-        /*
-	if (LwoReader.ProcessFromFile(LwoFile) == false)
+	if (Reader.readFile(file) == false)
 	{
-		cout << "Failed to handle chunks from file: " << LwoFile.GetFilename() << endl;
+		//cout << "Failed to handle chunks from file: " << LwoFile.GetFilename() << endl;
 		return EXIT_FAILURE;
 	}
-        */
 
 	// start using processed LWO-object from LwoReader..
 	// get opengl-list from object (with conversion) and display

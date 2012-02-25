@@ -25,5 +25,26 @@
 **/
 #define ID_TDDD		MakeID('T','D','D','D')
 
+/**
+  INFO: only in TurboSilver "cell" files (optional)
+*/
+#define ID_INFO		MakeID('I','N','F','O')
+
+/**
+  OBJ: in both "cell" and "object" files,
+  supports object hierarchies
+*/
+#define ID_OBJ		MakeID('O','B','J',' ')
+
+/** sub-chunks of OBJ */
+/** EXTR: describes "external" object (in a separate file) */
+#define ID_EXTR		MakeID('E','X','T','R')
+
+/** DESC: describe one node in hierarchy */
+#define ID_DESC		MakeID('D','E','S','C')
+
+/** TOBJ: "terminating object" ending of hierarchy chain */
+#define ID_TOBJ		MakeID('T','O','B','J')
+
 #endif
 
