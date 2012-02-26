@@ -59,15 +59,67 @@ bool CIobReader::handleChunk(CIOBuffer &buffer, unsigned int chunkID, unsigned i
 	switch (chunkID)
 	{
 	case ID_INFO:
+		// observer data (camera/viewport properties?)
 		break;
 
 	case ID_OBJ:
+		// node data (sub-chunks),
+		// "OBJ " always starts a new top-level sibling node in hierarchy?
+
+		IobNode *next = new IobNode();
+
+		// something like this to keep track of current top-level..
+		if (m_currentSibling == NULL)
+		{
+			// first top-level node
+			m_head = next;
+			m_currentSibling = next;
+		}
+		else
+		{
+			// add sibling (left-to-right)
+			m_currentSibling->right = next;
+			next->left = m_currentSibling;
+			m_currentSibling = next;
+		}
 		break;
 
-		// OBJ sub-chunks
 	case ID_EXTR:
+		// separate file for "external" node data
+		// -> spawn another instance of this with given name
+		// and append found nodes into "head" hierarchy..
+		// (TurboSilver only, not supported by Imagine?)
+		break;
+
 	case ID_DESC:
+		// chunk to describe one node in hierarchy,
+		// always starts new child-node in hierarchy?
+
+		IobNode *next = new IobNode();
+		if (m_currentChild == NULL)
+		{
+			// first descendant of top-level node
+			m_currentSibling->down = next;
+			next->up = m_currentSibling;
+			m_currentChild = next;
+		}
+		else
+		{
+			// add descendant (top-to-down)
+			next->up = m_currentChild;
+			m_currentChild->down = next;
+			m_currentChild = next;
+		}
+
+		// this chunk uses sub-chunks "OBJ " type for node data?
+
+		break;
+
 	case ID_TOBJ:
+		// empty marker chunk,
+		// end current node hierarchy chain:
+		// -> just end this chain?
+		m_currentChild = NULL;
 		break;
 
 	default:
@@ -96,12 +148,25 @@ bool CIobReader::readChunks(CAnsiFile &file, CIOBuffer &buffer)
 		unsigned int nextID = MakeTag(data);
 		unsigned int nextSize = BSwap4i(data+4);
 
-		if (file.Read(buffer, nextSize) == false)
+		// check for data in chunk
+		// (at least "TOBJ" chunk is just empty marker, ID and size must exist)
+		if (nextSize > 0)
 		{
-			// failure
-			return false;
+			// according to IFF spec, chunk must be padded to even size
+			// when data is odd sized
+			if ((nextSize % 2) != 0)
+			{
+				// TODO: see if we need unpadded size in some handling..
+				nextSize += 1;
+			}
+
+			if (file.Read(buffer, nextSize) == false)
+			{
+				// failure
+				return false;
+			}
+			m_read += nextSize;
 		}
-		m_read += nextSize;
 
 		if (handleChunk(buffer, nextID, nextSize) == false)
 		{
@@ -119,6 +184,9 @@ bool CIobReader::readChunks(CAnsiFile &file, CIOBuffer &buffer)
 CIobReader::CIobReader()
 	: m_size(0)
 	, m_read(0)
+	, m_head(NULL) // <- TODO: nullptr, check compiler..
+	, m_currentChild(NULL)
+	, m_currentSibling(NULL)
 {
 }
 

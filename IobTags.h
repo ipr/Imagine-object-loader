@@ -37,7 +37,10 @@
 #define ID_OBJ		MakeID('O','B','J',' ')
 
 /** sub-chunks of OBJ */
-/** EXTR: describes "external" object (in a separate file) */
+/**
+	EXTR: describes "external" object (in a separate file),
+	only used by TurboSilver "cell" files and not supported by Imagine?
+*/
 #define ID_EXTR		MakeID('E','X','T','R')
 
 /** DESC: describe one node in hierarchy */
